@@ -1,0 +1,22 @@
+{
+  "name": "devfest-windsor-2026",
+  "version": "1.0.0",
+  "description": "Production-grade conference platform for DevFest Windsor 2026",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^6.0.2",
+    "astro": "latest",
+    "tailwindcss": "^3.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "autoprefixer": "latest",
+    "typescript": "^5.4.0"
+  }
+}

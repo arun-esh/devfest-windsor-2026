@@ -1,0 +1,97 @@
+---
+interface Props {
+  logoSrc?: string;
+}
+
+const { logoSrc = "/logo.svg" } = Astro.props;
+
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Venue", href: "/venue" },
+  { label: "FAQ", href: "/faq" },
+];
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+        <img src={logoSrc} alt="DevFest Windsor 2026" class="h-12 w-auto" />
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center gap-8">
+        {
+          navItems.map((item) => (
+            <a
+              href={item.href}
+              class="text-slate-700 font-medium hover:text-blue-600 transition-colors text-sm"
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden flex flex-col gap-1.5"
+        aria-label="Toggle mobile menu"
+      >
+        <span class="w-6 h-0.5 bg-slate-700 transition-all"></span>
+        <span class="w-6 h-0.5 bg-slate-700 transition-all"></span>
+        <span class="w-6 h-0.5 bg-slate-700 transition-all"></span>
+      </button>
+
+      <!-- CTA Button (Desktop only) -->
+      <a
+        href="/#sponsors"
+        class="hidden md:block bg-gradient-to-r from-blue-600 to-green-500 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all duration-300 text-sm whitespace-nowrap"
+      >
+        Get Tickets
+      </a>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <nav
+      id="mobile-nav"
+      class="hidden md:hidden flex-col gap-2 pb-4 border-t border-slate-200"
+    >
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class="block px-4 py-2 text-slate-700 font-medium hover:bg-slate-100 hover:text-blue-600 transition-colors rounded text-sm"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Mobile menu toggle
+  const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+  const mobileNav = document.getElementById("mobile-nav");
+
+  if (mobileMenuBtn && mobileNav) {
+    mobileMenuBtn.addEventListener("click", () => {
+      mobileNav.classList.toggle("hidden");
+      mobileNav.classList.toggle("flex");
+    });
+
+    // Close menu when a nav link is clicked
+    const navLinks = mobileNav.querySelectorAll("a");
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileNav.classList.add("hidden");
+        mobileNav.classList.remove("flex");
+      });
+    });
+  }
+</script>

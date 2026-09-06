@@ -1,0 +1,130 @@
+---
+import type { Speaker } from "@types/speaker";
+
+interface Props {
+  speakers: Speaker[];
+  viewAllHref?: string;
+}
+
+const { speakers, viewAllHref = "#" } = Astro.props;
+
+const accentStyles: Record<
+  Speaker["accentColor"],
+  { blob: string; badge: string; ring: string }
+> = {
+  blue: {
+    blob: "bg-blue-600",
+    badge: "bg-blue-600",
+    ring: "group-hover:ring-blue-600/40",
+  },
+  green: {
+    blob: "bg-green-600",
+    badge: "bg-green-600",
+    ring: "group-hover:ring-green-600/40",
+  },
+  red: {
+    blob: "bg-red-600",
+    badge: "bg-red-600",
+    ring: "group-hover:ring-red-600/40",
+  },
+  gold: {
+    blob: "bg-amber-500",
+    badge: "bg-amber-500",
+    ring: "group-hover:ring-amber-500/40",
+  },
+};
+---
+
+<section
+  id="speakers"
+  class="relative py-20 sm:py-24 bg-white overflow-hidden"
+  aria-label="Featured speakers"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section header -->
+    <div
+      class="animate-fade-in-up flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-16"
+    >
+      <div class="max-w-xl">
+        <span class="text-sm font-bold tracking-widest text-red-500 uppercase">
+          Lineup
+        </span>
+        <h2 class="mt-2 text-4xl sm:text-5xl font-bold text-slate-900">
+          Featured Speakers
+        </h2>
+        <p class="mt-4 text-slate-600 leading-relaxed">
+          Great selection of speakers and content for an unforgettable
+          experience.
+        </p>
+      </div>
+
+      <a
+        href={viewAllHref}
+        class="group/link inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700 transition-colors whitespace-nowrap md:mt-3"
+      >
+        View all speakers
+        <span aria-hidden="true" class="inline-block transition-transform duration-300 group-hover/link:translate-x-1.5">→</span>
+      </a>
+    </div>
+
+    <!-- Speaker grid with stagger animation -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-14 animate-stagger">
+      {
+        speakers.map((speaker, index) => {
+          const accent = accentStyles[speaker.accentColor];
+          return (
+            <div
+              class="group flex flex-col items-center text-center animate-fade-in-up"
+              style={`animation-delay: ${index * 0.1}s;`}
+            >
+              <!-- Avatar with decorative color blob -->
+              <div class="relative w-32 h-32 sm:w-40 sm:h-40 mb-5">
+                <div
+                  class:list={[
+                    "blob-shape absolute inset-0 scale-105 transition-transform duration-300 group-hover:scale-110",
+                    accent.blob,
+                  ]}
+                  style={`animation-delay: ${index * 700}ms;`}
+                  aria-hidden="true"
+                />
+                <img
+                  src={speaker.imageUrl}
+                  alt={speaker.imageAlt}
+                  class:list={[
+                    "relative w-full h-full rounded-full object-cover ring-4 ring-white shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-110",
+                    accent.ring,
+                  ]}
+                  loading="lazy"
+                />
+                <div
+                  class:list={[
+                    "absolute bottom-0 right-0 px-2 py-1 text-xs font-bold text-white rounded-full transition-transform duration-300 group-hover:scale-110",
+                    accent.badge,
+                  ]}
+                >
+                  {speaker.title}
+                </div>
+              </div>
+
+              <!-- Name & Info -->
+              <h3 class="text-lg font-bold text-slate-900 line-clamp-2">
+                {speaker.name}
+              </h3>
+              <p class="text-sm text-slate-600 mt-1 line-clamp-2">
+                {speaker.bio}
+              </p>
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .blob-shape {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    filter: blur(40px);
+    opacity: 0.6;
+  }
+</style>
